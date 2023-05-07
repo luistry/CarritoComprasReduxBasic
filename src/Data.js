@@ -1,6 +1,6 @@
 export const data = [
     {
-    
+      id: 1,
       nombre: "Reebook Clasic Leather",
       precio: 50,
       imagen:
@@ -11,7 +11,7 @@ export const data = [
       cantidadEnStock: 4,
     },
     {
-
+      id: 2,
       nombre: "Nike Panda",
       precio: 100,
       imagen:
@@ -22,7 +22,7 @@ export const data = [
       cantidadEnStock: 3,
     },
     {
-    
+      id: 3,
       nombre: "Converse Clasic",
       precio: 100,
       imagen:
@@ -33,7 +33,7 @@ export const data = [
       cantidadEnStock: 2,
     },
     {
-    
+      id: 4,
       nombre: "Nike air Jordan Retro Shadow",
       imagen:
         "https://cdn.discordapp.com/attachments/750089258852941874/1097216261244584097/13031536_21350126_600.jpg",
@@ -43,7 +43,7 @@ export const data = [
       cantidadEnStock: 1,
     },
     {
-  
+      id: 5,
       nombre: "Adidas Originals",
       imagen:
         "https://cdn.discordapp.com/attachments/750089258852941874/1096948122556579910/Adidas.jpg",
@@ -53,7 +53,7 @@ export const data = [
       cantidadEnStock: 2,
     },
     {
-    
+    id: 6,
       nombre: "Puma Clasic",
       imagen:
         "https://cdn.discordapp.com/attachments/750089258852941874/1097215574125322440/louis-vuitton-tenis-lv-trainer-zapatos--BO9U7PMI02_PM2_Front_view.jpg",
