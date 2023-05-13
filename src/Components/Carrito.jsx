@@ -1,9 +1,11 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,Card, Button, CardMedia } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Delete } from "@mui/icons-material";
 import { connect } from "react-redux";
+
 const Carrito = ({onEliminarCarrito}) => {
   const [productosEnCarrito, setProductosEnCarrito] = useState({});
+  
   useEffect(() => {
     const productosSeleccionados = JSON.parse(localStorage.getItem("productosSeleccionados"));
     if (productosSeleccionados) {
@@ -21,6 +23,14 @@ const Carrito = ({onEliminarCarrito}) => {
       setProductosEnCarrito(productosEnCarrito);
     }
   }, []);
+  
+  const handleEliminarProducto = (id) => {
+    const { [id]: productoEliminado, ...productosRestantes } = productosEnCarrito;
+    localStorage.setItem("productosSeleccionados", JSON.stringify(Object.values(productosRestantes)));
+    setProductosEnCarrito(productosRestantes);
+    onEliminarCarrito();
+  };
+  
   const handleLimpiarCarrito = () => {
     localStorage.removeItem("productosSeleccionados");
     setProductosEnCarrito({});
@@ -30,6 +40,7 @@ const Carrito = ({onEliminarCarrito}) => {
   const calcularTotal = () => {
     return Object.values(productosEnCarrito).reduce((total, producto) => total + producto.precio * producto.cantidad, 0);
   };
+  
   return (
     <div style={{ margin: "4rem 0 2rem" }}>
       <TableContainer component={Paper}>
@@ -40,6 +51,7 @@ const Carrito = ({onEliminarCarrito}) => {
               <TableCell align="right">Precio</TableCell>
               <TableCell align="right">Cantidad</TableCell>
               <TableCell align="right">Total</TableCell>
+              <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -51,6 +63,11 @@ const Carrito = ({onEliminarCarrito}) => {
                 <TableCell align="right">{producto.precio}$</TableCell>
                 <TableCell align="right">{producto.cantidad}</TableCell>
                 <TableCell align="right">{producto.precio * producto.cantidad}$</TableCell>
+                <TableCell align="right">
+                  <Button variant="outlined" color="error" onClick={() => handleEliminarProducto(producto.id)}>
+                    <Delete />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
             <TableRow>
@@ -58,13 +75,14 @@ const Carrito = ({onEliminarCarrito}) => {
                 Total:
               </TableCell>
               <TableCell align="right">{calcularTotal()}$</TableCell>
+              <TableCell align="right"></TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
       <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1rem" }}>
         <Button variant="outlined" endIcon={<Delete />} color="error" onClick={handleLimpiarCarrito}>
-          Limpiar carrito
+          LimpiarTodo el Carrito carrito
         </Button>
       </div>
     </div>

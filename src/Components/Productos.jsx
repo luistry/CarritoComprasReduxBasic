@@ -3,11 +3,27 @@ import { data } from '../Data';
 import ProductoCard from "./Productcard";
 import { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import {Snackbar,Alert} from "@mui/material";
 
 const Productos = ({onAgregarAlCarrito}) => {
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
   const [productos, setProductos] = useState(data);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [productosEnCarrito, setProductosEnCarrito] = useState([]);
+
+  const handleSnackbarOpen = () => {
+    setOpenSnackbar(true);
+  };
+  
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+  
+    setOpenSnackbar(false);
+  };
+  
 
   useEffect(() => {
     if (productosSeleccionados.length > 0) {
@@ -24,6 +40,7 @@ const Productos = ({onAgregarAlCarrito}) => {
   const handleComprar = (producto) => {
     onAgregarAlCarrito(producto);
     setProductosSeleccionados([...productosSeleccionados, producto]);
+    handleSnackbarOpen();
   };
   
   
@@ -52,7 +69,7 @@ const Productos = ({onAgregarAlCarrito}) => {
                 transition: "all 0.3s ease"
               }
             }} style={{ margin: "4rem 0 2rem" }}>
-              <CardMedia component="img" image={`${producto.imagen}`} style={{ maxWidth: "100%", maxHeight: "300px", height: "auto", objectFit: "cover" }} />
+              <CardMedia component="img" image={`${producto.imagen}`} style={{ maxWidth: "100%", maxHeight: "300px", height: "auto", objectFit: "cover",backgroundColor: "#CCCCCC" }} />
               <CardContent sx={{ paddingBottom: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <div>
                   <Typography variant="h5" color="initial" textAlign={"center"} sx={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "100%", fontSize: "1.2rem", lineHeight: "1.4em" }}>
@@ -78,15 +95,27 @@ const Productos = ({onAgregarAlCarrito}) => {
       </Grid>
       {productosSeleccionados.length > 0 && (
         <ProductoCard producto={productosSeleccionados} onAgregarAlCarrito={handleAgregarAlCarrito} />
-      )}
+      )}<Snackbar
+  open={openSnackbar}
+  autoHideDuration={3000}
+  onClose={handleSnackbarClose}
+  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+>
+<Alert  onClose={handleSnackbarClose} severity="success"  sx={{ width: "100%" }}>
+¡Añadiste un Producto al Carrito!
+</Alert>
+</Snackbar>
     </>
   );
+
 };
 const mapStateToProps = (estado) => {
   return {
     productos: estado.productos
   }
 };
+
+
 const mapDispatchToProps = (dispatch) => {
   return {
     onAgregarAlCarrito: (producto) => {
@@ -94,5 +123,5 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: "AGREGAR_CARRITO_PRODUCTO", producto: producto });
     },
   };
-};
+}
 export default connect(mapStateToProps, mapDispatchToProps)(Productos);
